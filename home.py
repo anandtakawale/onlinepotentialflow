@@ -16,18 +16,19 @@ class home(mainHandler):
             username = None
             loginLink = users.create_login_url(self.request.uri)
             logoutLink = "/"
-        comments_ = recentComments()
-        self.renderPage("version0.html", username = username, loginLink = loginLink, logoutLink = logoutLink, comments = comments_)
+        comments_n = recentComments()
+        self.renderPage("version0.html", username = username, loginLink = loginLink, logoutLink = logoutLink, comments = comments_n)
 
     def post(self, **kwargs):
-        name = self.request.get('dname')
-        text = self.request.get('comment')
+        name = str(self.request.get('dname'))
+        text = str(self.request.get('comment'))
         if name and text:
             c = Comment(text = text, user = name)
             c.put()
             sleep(0.1)
             recentComments(True)
         self.redirect('/')
+
 class cacheFlush(mainHandler):
     """
     Flushes the cache

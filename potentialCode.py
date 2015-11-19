@@ -29,7 +29,13 @@ class potential(object):
         For uniformFlow - velocity [m/s]
         For source/sink, vortex - strength [m^2 / s]
         """
-        self.m = strength 
+        self.m = strength
+
+    def getm(self):
+        """
+        Returns the strength of the entity
+        """
+        return self.m
                 
 class source(potential):
     """

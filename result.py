@@ -22,7 +22,7 @@ class result(mainHandler):
     """
     Class which handles result page
     """
-    def get(self):
+    def post(self):
         #This portion takes the input values provided at home page
         sou = int(self.request.get('source')) # no of sources
         vor = int(self.request.get('vortex')) # no of vortices
@@ -69,17 +69,23 @@ class result(mainHandler):
             entities.append(doublet(d[2], (d[0], d[1])))
 
         entities.append(uniform(u, alpha))
-        
-        image_si = plotsifi(entities)
-        image_quiver = plotquiver(entities)
-        caption = getCaption(entities)
-        user = users.get_current_user()
-        if user:
-            username = user.nickname()
-            loginLink = users.create_login_url(self.request.uri)
-            logoutLink = users.create_logout_url(self.request.uri)
+        Flag = False
+        for entity in entities:
+            if entity.getm() != 0:
+               Flag = True
+        if Flag:
+            image_si = plotsifi(entities)
+            image_quiver = plotquiver(entities)
+            caption = getCaption(entities)
+            user = users.get_current_user()
+            if user:
+                username = user.nickname()
+                loginLink = users.create_login_url(self.request.uri)
+                logoutLink = users.create_logout_url(self.request.uri)
+            else:
+                username = None
+                loginLink = users.create_login_url(self.request.uri)
+                logoutLink = "/"
+                self.renderPage("result.html", plot_si = image_si, plot_quiver = image_quiver, caption = caption, username = username, loginLink = loginLink, logoutLink = logoutLink)
         else:
-            username = None
-            loginLink = users.create_login_url(self.request.uri)
-            logoutLink = "/"
-        self.renderPage("result.html", plot_si = image_si, plot_quiver = image_quiver, caption = caption, username = username, loginLink = loginLink, logoutLink = logoutLink)
+            self.redirect("/")

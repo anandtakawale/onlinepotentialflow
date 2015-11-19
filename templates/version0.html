@@ -1,5 +1,5 @@
 		<!DOCTYPE html>
-		<html labg="en-us">
+		<html lang="en-us">
 		<head>
 		<title>Potential flow</title>
 		<script type="text/javascript"
@@ -17,7 +17,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Potential Flow</a>
+				<a class="navbar-brand" href="/">Online Potential Flow</a>
 			</div>
 		
 			<!-- Collect the nav links, forms, and other content for toggling -->
@@ -29,7 +29,6 @@
 			</div><!-- /.navbar-collapse -->
 		</nav>
 		<div class="container">
-			<div class="container">
 				<div class="row">
 					<div class = "col-md-8 col-xs-12">
 						<div role="tabpanel">
@@ -54,9 +53,20 @@
 						    	<!-- Home consists of main form and the result -->
 						        <div role="tabpanel" class="tab-pane active" id="home">
 						        	<br>
-						        	Hello, {% if username %} {{username}} {% endif %}welcome to my website for plotting streamlines in the potential flow.
+						        	<p>
+						        	Hello, {% if username %} {{username}} {% endif %}welcome to <code>onlinepotentialflow</code>website for plotting streamlines in the potential flow.
+						        	</p>
+						        	<p>
+						        	The computational domain is rectangular with lower left corner \((-5,-5)\) and upper left corner \((5, 5)\), hence please specify the origin of entities within this domain.
+						        </p>
+						        <p>
+						        	You can add a sink by specifying strength &lt; 0, similarly you can add clockwise vortex the same way. The maximum and minimum strength you can have is 100, -100 respectively. Doublet can not have negative strength. 
+						        </p>
+						        <p>
+						        	The angle for uniform flow is restricted with \(0\le \alpha \le 90\).
+						        </p>
 						        	<br><br>
-						        	<form action= "/result" method="get">
+						        	<form action= "/result" method="post">
 							        	<div class="row">
 							        			<div class="col-xs-4"><b>Entity</b></div>
 							        			<div class = "col-xs-2"><b>Number</b></div>
@@ -80,7 +90,6 @@
 												</select>
 											</div>
 											<div class="col-xs-6">
-												
 												<div class="container_input_source" >	
 														
 												</div>
@@ -89,20 +98,19 @@
 
 										<div class = "row">
 							        		<div class = "col-xs-4">Vortex</div>
-							     			<div class = "col-xs-2">
-									        	<select class = "select_js" name="vortex" id="select_vortex">
-												        	<option value="0" selected>0</option>
-														    <option value="1">1</option>
-														    <option value="2">2</option>
-														    <option value="3">3</option>
-														</select>
-											</div>
-											<div class="col-xs-6">
-												
-												<div class="container_input_vortex" >	
-														
+								     			<div class = "col-xs-2">
+										        	<select class = "select_js" name="vortex" id="select_vortex">
+													        	<option value="0" selected>0</option>
+															    <option value="1">1</option>
+															    <option value="2">2</option>
+															    <option value="3">3</option>
+															</select>
 												</div>
-											</div>
+												<div class="col-xs-6">
+														<div class="container_input_vortex" >	
+																
+														</div>
+												</div>
 										</div>
 
 										<div class = "row">
@@ -116,7 +124,6 @@
 												</select>
 											</div>
 											<div class="col-xs-6">
-												
 												<div class="container_input_doublet" >	
 														
 												</div>
@@ -137,7 +144,7 @@
 											</div>
 										</div>
 
-										<input type="submit" value="Submit"/>
+										<input type="submit" class="btn btn-success" value="Submit"/>
 									</form>
 								</div>
 						        <!-- Theory consits of all the formulae used -->
@@ -146,7 +153,7 @@
 									<blockquote>When flow is both frictionless and irrotational, pleasant things happen.
 						         	<small>by <cite>F.M. White</cite></small>
 									</blockquote>
-									<br\>
+									<br>
 									<h3>Brief History</h3>
 									If we go into the history of fluid mechanics, the early efforts were directed towards idealised frictionless fluid.This ideal fluid theory is now known as "hydrodynamics" as Bernoulli termed it.
 									<p>With the invent of differential calculus by Newton, those who followed him mostly dealt with this idealised frictionless flows. </p>
@@ -155,7 +162,68 @@
 									<p>Here we will mostly concern ourselves with incompressible potential flows, even though potential flows have been used to describe compressible flows. We will also restrict ourselves to analyse 2D flow only.</p>
 									<h4>Conditions</h4>
 									<p>First we will see what are the conditions to be satisfied by the flow so that it can be represented by potential flow thoery.</p>
-									<p>Let us assume that the flow under consideration is $$\phi$$</p>
+									<p>Let us assume that the flow under consideration is such that we can have a function \(\phi\) so that 
+										$$u = \frac{\partial \phi}{\partial x}$$
+										$$v = \frac{\partial \phi}{\partial y}$$
+									</p>
+									<p>
+									By vector calculus if we are able to represent a vector function(which is velocity in our case) by divergence of a scalar function then the curl of such a vector function(\(\nabla \times v\)) is 0. Which means that the flow is irrotational
+
+									`</p>
+
+									<p>
+
+										Also as the flow is incompressible it should also satify continuity equation given by
+										$$\frac{\partial u}{\partial x} + \frac{\partial v}{\partial y} = 0$$
+
+										Hence we get $$ \nabla^2 \phi = 0$$
+
+										Hence Laplace equation is satisfied by potential function.
+									</p>
+									<p>
+										Now let us have another function \(\psi\), which is termed as stream function and is defined such a way that
+
+										\[u = \frac{\partial \psi}{\partial y}\]
+										\[v = -\frac{\partial \psi}{\partial x}\]
+
+										The continuity equation for incompressible flow is automatically satisfied by stream function \(\psi\) provided its second partial derivative is continous as given by <a href="https://en.wikipedia.org/wiki/Symmetry_of_second_derivatives">Schwarz's theorem</a>.
+									</p>
+
+									<p>
+										By the very definition of vorticity for 2D flow, we have
+										\[ \nabla \times v = \begin{vmatrix}
+																  \hat{i} & \hat{j} & \hat{k} \\
+																  \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z}  \\
+																  u & v & w
+																 \end{vmatrix} = 0 \]
+										As we for 2D flow \(w = 0\) and \(\frac{\partial}{\partial z}\) of any quantity is also zero. Hence we can write
+
+										\[\nabla \times v = -\nabla^2 \psi \hat{k} = 0\]
+										Hence Stream function also satisfies the Laplace equation. Laplace equation being linear, we can use principle of superposition for such kinds of flows which makes the analysis of such flows very easy as we can just add up the stream functions of two different flows to get the combination of flows.
+										</p>
+										<p>The idea of potential flow is to transform the physical domain \((x,y)\) to a transformed domain \((\phi, \psi)\) by using analytic functions, generally this is done with the help of complex number as it makes the analysis easy for formualtion.
+											</p>
+										\[\phi + i \psi = f(x + iy) = f(z)\]
+										<p>
+											Here are some of the commmon complex potentials generally used
+										</p>
+										<p>
+											<h5>Source/sink</h5>
+											\[f(z) = \frac{m}{2\pi}ln(z - z_0)\]
+											Where m is strength and m > 0 gives source, while m &lt; 0 gives sink and \(z_0\) is the origin of the source
+											<h5>Free Vortex</h5>
+											\[f(z) = -i\frac{\Gamma}{2\pi}ln(z - z_0)\]
+											Where \(\Gamma\) is the strength of vortex
+											<h5>Doublet</h5>
+											\[f(z) = \frac{\mu}{z-z_0}\]
+											Where \(\mu)\ is the strength of doublet
+											<h5>Uniform flow</h5>
+											\[f(z) = U e^{-i\alpha} z\]
+											Where \(\alpha\) is angle(anticlockwise) made by flow with \(X\) axis.
+										</p>
+										<p class ="small">
+											References - Class notes, Fluid mechanics by F.M. White, wikipedia
+										</p>
 
 								</div>
 
@@ -168,7 +236,8 @@
 							        Basically you need to have python installed.
 							        <p>It also requires <a target="_blank" href="http://www.numpy.org/"><i>numpy</i></a> and <a target="_blank" href="http://matplotlib.org/"><i>matplotlib</i></a></p>
 							        <p>The source code for plotting available here <a href="https://github.com/anandtakawale/potentialFlow">Potential flow on github</a>.</p>
-							       	<h4>Website code</h4>
+							       	<h4>Website source code</h4>
+							       	<p>It is available here <a href="https://github.com/anandtakawale/onlinepotentialflow">Online Potential Flow on gitHub</a></p>
 
 						        </div>
 
@@ -178,43 +247,11 @@
 						        <p>Hi, my name is Anand Takawale, I am MS student at IIT Madras. I am currently taking a course ME6040 on Incompressible fluid flow by <a href="https://mech.iitm.ac.in/Faculty/dc/home.php">Dr. Dhiman Chatterjee</a>.</p>
 						        <p>This website was made as a fun exercise so that anyone can plot the streamline for the potential flow with given entities online.</p>
 						        <p>I request you to provide your feedback on the commets section below so that I can improve the website.</p>
+						        <p>If there is an error(and I think there will be plenty) in any section please feel free to mention in the comments</p>
 						        </div>						        
 						    </div>
 						</div>
-						<div class="row">
-						<div id="main">
-							<div class="col-xs-12">
-								<h3 class="heading">Comments Section</h3>
-							</div>
-								<p>Any suggetions/feedback/flames are really appreciated </p>
-								<br>
-									<div id='form'>
-										<div class="col-xs-6">
-											<div class="row">
-													<form action="/" method="POST" id="commentform" class = "form">
-														<div class = "form-group">
-															<div id="comment-name" class="form-row">
-															<input class = "form-control" type = "text" placeholder = "Name (required)" name = "dname"  id = "name" >
-															</div>
-															<textarea class = "form-control" name = "comment" placeholder = "Message" id = "comment" ></textarea>
-															<a href="/"><button type="submit" class="btn btn-default" name="dsubmit" id="commentSubmit" value="Submit Comment">Submit Comment</a>
-														</div>
-													</form>
-											</div>
-										</div>
-									</div>
-									<div class = 'container col-xs-8'>
-										<h3>Previous Comments</h3>
-										{% for comment in comments %}
-										<hr/>
-										<p class = "text-danger">{{comment.user}}</p> says:
-										<p class = "small">On {{comment.created}}</p>
-										<p class = "bg-info">{{comment.text}}</p>
-										<br>
-										{% endfor %}
-									</div>						
-							</div>
-						</div>
+
 					</div>
 					<div class="col-md-4 col-xs-12">
 						<div id="carousel-img" class="carousel slide" data-ride="carousel">
@@ -255,16 +292,44 @@
 						</div>
 						<br>
 						<br>
-						<div class = "row">
-								<blockquote>
-							         <p>You have to dream before your dreams can come true.</p>
-							         <small>by <cite>A.P.J. Abdul Kalam</cite></small>
-								</blockquote>
-						</div>
 					</div>
 				</div>
-				
-			</div>
+				<div class="row">
+							<div id="main">
+								<div class="col-xs-12">
+									<h3 class="heading">Comments Section</h3>
+								</div>
+									<p>Any suggetions/feedback/flames are really appreciated </p>
+									<br>
+										<div id='form'>
+											<div class="col-md-6 col-xs-12">
+												<div class="row">
+														<form action="/" method="POST" id="commentform" class = "form">
+															<div class = "form-group">
+																<label for="usr">Name:</label>
+																<input class = "form-control" type = "text" placeholder = "Name (required)" name = "dname"  id = "name" >
+															</div>
+															<div class ="form-group">
+																<label for="comment">Comment:</label>
+																<textarea class = "form-control" name = "comment" placeholder = "Message" id = "comment" ></textarea>
+															</div>
+																<button type="submit" class="btn btn-default" name="dsubmit" id="commentSubmit" value="Submit Comment">Submit Comment</button>
+														</form>
+												</div>
+											</div>
+										</div>
+										<div class = 'container col-xs-8'>
+											<h3>Previous Comments</h3>
+											{% for comment in comments %}
+											<hr/>
+											<p class = "text-danger">{{comment.user}}</p> says:
+											<p class = "small">On {{comment.created}}</p>
+											<p class = "bg-info">{{comment.text}}</p>
+											{% endfor %}
+										</div>						
+								</div>
+							</div>
+				</div>
 		</div>
 			
 
@@ -276,9 +341,9 @@
 										    var select = parseInt($('#select_source').val() , 10);
 										    var html = '';
 										    for(var i = 0;i< select ; i++){
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="source_x' + i +  '"/>';
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="source_y' + i +  '"/>';
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-100" max = "100" name="source_m' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-5" max = "5" name="source_x' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-5" max = "5" name="source_y' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-100" max = "100" name="source_m' + i +  '"/>';
 										    }
 										    $('.container_input_source').empty().html(html);
 										 }).change();
@@ -288,9 +353,9 @@
 										    var select = parseInt($('#select_vortex').val() , 10);
 										    var html = ''
 										    for(var i = 0;i< select ; i++){
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="vortex_x' + i +  '"/>';
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="vortex_y' + i +  '"/>';
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-100" max = "100" name="vortex_m' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-5" max = "5" name="vortex_x' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-5" max = "5" name="vortex_y' + i +  '"/>';
+										        html += '<input class = "col-xs-4" type="number" step="0.01" min="-100" max = "100" name="vortex_m' + i +  '"/>';
 										    }
 										    $('.container_input_vortex').empty().html(html);
 										 }).change();
@@ -302,7 +367,7 @@
 											for(var i = 0;i< select ; i++){
 										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="doublet_x' + i +  '"/>';
 										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-5" max = "5" name="doublet_y' + i +  '"/>';
-										        html += '<input class = "col-xs-4"type="number" step="0.01" min="-100" max = "100" name="doublet_m' + i +  '"/>';
+										        html += '<input class = "col-xs-4"type="number" step="0.01" min="0" max = "100" name="doublet_m' + i +  '"/>';
 										    }										    
 										    $('.container_input_doublet').empty().html(html);
 										 }).change();
